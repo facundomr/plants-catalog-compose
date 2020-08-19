@@ -10,7 +10,6 @@ import androidx.compose.foundation.Icon
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.ScrollableColumn
 import androidx.compose.foundation.Text
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -81,24 +80,22 @@ class PlantDetailActivity : AppCompatActivity() {
 
 @Composable
 private fun PlantDetail(plant: Plant) {
-    ScrollableColumn {
-        Column(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalGravity = Alignment.CenterHorizontally
-        ) {
-            PlantAvatar(plant.image)
-            Text(
-                text = "${plant.shortDescription}",
-                style = typography.h6,
-                modifier = Modifier.padding(vertical = 8.dp, horizontal = 16.dp)
-            )
-            Text(
-                text = "${plant.description}",
-                style = typography.body1,
-                modifier = Modifier.padding(vertical = 8.dp, horizontal = 16.dp)
-            )
-            Liked()
-        }
+    ScrollableColumn(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalGravity = Alignment.CenterHorizontally
+    ) {
+        PlantAvatar(plant.image)
+        Text(
+            text = "${plant.shortDescription}",
+            style = typography.h6,
+            modifier = Modifier.padding(vertical = 8.dp, horizontal = 16.dp)
+        )
+        Text(
+            text = "${plant.description}",
+            style = typography.body1,
+            modifier = Modifier.padding(vertical = 8.dp, horizontal = 16.dp)
+        )
+        LikedIndicator()
     }
 }
 
@@ -116,7 +113,7 @@ fun PlantAvatar(@DrawableRes image: Int) {
 }
 
 @Composable
-fun Liked() {
+fun LikedIndicator() {
     val selected = state { false }
     IconButton(
         onClick = { selected.value = !selected.value },
