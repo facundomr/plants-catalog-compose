@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Android 11 LATAM Compose</string>
+    <string name="plants_list_title">Plant catalog</string>
+</resources>
