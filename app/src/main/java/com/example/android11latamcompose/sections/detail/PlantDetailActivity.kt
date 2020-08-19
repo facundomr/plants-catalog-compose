@@ -22,7 +22,7 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.filled.StarBorder
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.state
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawShadow
@@ -114,7 +114,7 @@ fun PlantAvatar(@DrawableRes image: Int) {
 
 @Composable
 fun LikedIndicator() {
-    val selected = state { false }
+    val selected = mutableStateOf(false)
     IconButton(
         onClick = { selected.value = !selected.value },
         Modifier.size(72.dp)
