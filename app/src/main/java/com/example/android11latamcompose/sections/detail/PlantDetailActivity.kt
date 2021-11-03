@@ -2,40 +2,39 @@ package com.example.android11latamcompose.sections.detail
 
 import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.activity.ComponentActivity
 import androidx.annotation.DrawableRes
-import androidx.compose.animation.animate
-import androidx.compose.foundation.Icon
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.ScrollableColumn
-import androidx.compose.foundation.Text
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.IconButton
-import androidx.compose.material.Scaffold
-import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.filled.StarBorder
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.drawShadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.setContent
-import androidx.compose.ui.res.imageResource
+import androidx.activity.compose.setContent
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.*
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.android11latamcompose.model.Plant
 import com.example.android11latamcompose.ui.purple200
 import com.example.android11latamcompose.ui.typography
 
-class PlantDetailActivity : AppCompatActivity() {
+class PlantDetailActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -56,12 +55,12 @@ class PlantDetailActivity : AppCompatActivity() {
                     },
                     navigationIcon = {
                         IconButton(onClick = { finish() }) {
-                            Icon(Icons.Filled.ArrowBack)
+                            Icon(Icons.Filled.ArrowBack, null)
                         }
                     }
                 )
             },
-            bodyContent = {
+            content = {
                 PlantDetail(plant)
             }
         )
@@ -80,9 +79,9 @@ class PlantDetailActivity : AppCompatActivity() {
 
 @Composable
 private fun PlantDetail(plant: Plant) {
-    ScrollableColumn(
+    Column(
         modifier = Modifier.fillMaxWidth(),
-        horizontalGravity = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         PlantAvatar(plant.image)
         Text(
@@ -102,25 +101,30 @@ private fun PlantDetail(plant: Plant) {
 @Composable
 fun PlantAvatar(@DrawableRes image: Int) {
 
-    val resource = imageResource(id = image)
     Image(
-        resource,
-        modifier = Modifier.size(240.dp)
+        painter = painterResource(id = image),
+        modifier = Modifier
+            .size(240.dp)
             .padding(16.dp)
-            .drawShadow(8.dp, CircleShape),
-        contentScale = ContentScale.Crop
+            .clip(CircleShape)
+            .shadow(8.dp),
+        contentScale = ContentScale.Crop,
+        contentDescription = null
     )
 }
 
 @Composable
 fun LikedIndicator() {
-    val selected = mutableStateOf(false)
+    val selected = remember { mutableStateOf(false) }
     IconButton(
         onClick = { selected.value = !selected.value },
         Modifier.size(72.dp)
     ) {
         val icon = if (selected.value) Icons.Default.Star else Icons.Default.StarBorder
-        val color = animate(if (selected.value) purple200 else Color.Black)
-        Icon(icon, tint = color)
+        val color = animateColorAsState(
+            targetValue = if (selected.value) purple200 else Color.Black,
+            animationSpec = tween(durationMillis = 2500)
+        )
+        Icon(imageVector = icon, contentDescription = null, tint = color.value)
     }
 }

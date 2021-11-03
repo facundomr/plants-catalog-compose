@@ -1,17 +1,17 @@
 package com.example.android11latamcompose.sections.list
 
 import android.os.Bundle
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.foundation.Text
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumnFor
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.setContent
 import androidx.compose.ui.unit.dp
 import com.example.android11latamcompose.R
 import com.example.android11latamcompose.model.Plant
@@ -19,7 +19,7 @@ import com.example.android11latamcompose.sections.detail.PlantDetailActivity
 import com.example.android11latamcompose.ui.Android11LATAMComposeTheme
 import com.example.android11latamcompose.ui.typography
 
-class PlantsActivity : AppCompatActivity() {
+class PlantsActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -31,7 +31,7 @@ class PlantsActivity : AppCompatActivity() {
                             Text(getString(R.string.plants_list_title))
                         })
                     },
-                    bodyContent = {
+                    content = {
                         PlantsScreenContent()
                     }
                 )
@@ -75,8 +75,11 @@ fun LoadingScreen() {
 
 @Composable
 fun PlantsList(plants: List<Plant>, onPlantClicked: (Plant) -> Unit) {
-    LazyColumnFor(plants) { plant ->
-        PlantCard(plant, onPlantClicked)
+    LazyColumn() {
+
+        items(plants) { plant ->
+            PlantCard(plant, onPlantClicked)
+        }
     }
 }
 
